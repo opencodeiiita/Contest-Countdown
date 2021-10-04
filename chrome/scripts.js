@@ -25,8 +25,10 @@ function setClock(date) {
     }
 }
 
-function runClock() {
-    var targetDate = new Date("Nov 4, 2021").getTime();
+function runClock(targetDate) {
+    if (targetDate === undefined || targetDate === null) {
+        var targetDate = new Date("Nov 4, 2021").getTime();
+    }
     setClock(targetDate);
 }
 var timeinterval = setInterval(runClock, 1000);
