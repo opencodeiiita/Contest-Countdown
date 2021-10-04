@@ -24,7 +24,7 @@ var Contests = class {
 
     // This array stores all the contests information
     // each member of the array is an object with *atleast* these fields:
-    //          name, startTimeSeconds, durationSeconds
+    //          name(string), startTimeSeconds(int), durationSeconds(int), participating(bool)
     // this.allContests = [{name: "example cf round 89", startTimeSeconds: 19900399, durationSeconds: 1290}]
     this.allContests = [];
 
@@ -100,7 +100,7 @@ var Contests = class {
   }
 
   // TODO: Issue#6
-  // use the newContest array to update the existing this.allContests array efficiently
+  // use the newContest array to update the existing this.allContests array **efficiently**
   // since original array contains more information, only add entries dont remove any
   updateContests(newContests) {}
 
