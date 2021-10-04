@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+html,
+body { height: 100%;
+}
+#container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+#timer {
+  text-align: center;
+  font-size: 60px;
+  padding: 50px;
+}
+</style>
+</head>
+<body>
+<div id="container">
+  <div id="timer"></div>
+</div>
+
+<script>
+var targetDate = new Date("Nov 4, 2021").getTime();
+
+var x = setInterval(function() {
+
+  var currentTime = new Date().getTime();
+  var interval = targetDate - currentTime;
+
+  var days = Math.floor(interval / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((interval % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((interval % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((interval % (1000 * 60)) / 1000);
+
+  document.getElementById("timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s Left";
+
+  if (interval < 0) {
+    clearInterval(x);
+    document.getElementById("timer").innerHTML = "Contest has Started";
+  }
+}, 1000);
+</script>
+
+</body>
+</html>
+
