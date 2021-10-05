@@ -33,3 +33,7 @@ function runClock(targetDate) {
 }
 var timeinterval = setInterval(runClock, 1000);
 
+// Issue #10: Write html and javascript to display contests from the paramter array
+// @params allContests: array of contest-obeject (refer to backgroung.js)
+// @return none
+function displayContests() {}
