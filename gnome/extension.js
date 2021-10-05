@@ -60,11 +60,11 @@ const ContestCountdown = new Lang.Class({
     // Listen for update of padding in settings
     onLeftPaddingChanged = this.settings.connect(
       "changed::left-padding",
-      this._leftPaddingChanged.bind(this)
+      this._PaddingChanged.bind(this)
     );
     onRightPaddingChanged = this.settings.connect(
       "changed::right-padding",
-      this._rightPaddingChanged.bind(this)
+      this._PaddingChanged.bind(this)
     );
 
     // Create a new layout, add the text and add the actor to the layout
@@ -84,7 +84,7 @@ const ContestCountdown = new Lang.Class({
   },
 
   // Update padding of this.buttonText according to new value set in settings
-  _leftPaddingChanged: function () {
+  _PaddingChanged: function () {
     this.buttonText.set_style(
       "padding-left: " +
         this.settings.get_int("left-padding") +
@@ -95,9 +95,6 @@ const ContestCountdown = new Lang.Class({
     );
   },
 
-  // TODO: Issue #3
-  // complete this function
-  _rightPaddingChanged: function () {},
 
   //Define the refreshing function and set the timeout in seconds
   _refreshTimer: function () {
