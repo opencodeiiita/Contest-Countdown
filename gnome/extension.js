@@ -117,13 +117,34 @@ const ContestCountdown = new Lang.Class({
   // TODO: Issue #4
   // Make the string to display in top bar using contests objects
   // @return: string
-  _getTimerText: function () {},
+  _getTimerText: function () {
+    var timerText;
+    let timeDiff = this.contests.secondsTillNextContest();   
+    if (timeDiff >= 0) {
+      if(timeDiff == Infinity) {
+        timerText = "No upcoming contests";
+      } else {
+        var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
 
+        timerText = days + "d " + hours + "h " + minutes + "m ";
+      }    
+    } else {
+      if (timeDiff == -1) {
+        timerText = "Loading data";
+      } else {
+        timerText = "Failed to load data";
+      } 
+    }
+    return timerText;
+  },
+  
   _refreshUI: function (data) {
     let txt = data.toString();
     this.buttonText.set_text(txt);
   },
-
+  
   stop: function () {
     if (_httpSession !== undefined) _httpSession.abort();
     _httpSession = undefined;
