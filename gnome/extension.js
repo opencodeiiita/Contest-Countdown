@@ -122,7 +122,7 @@ const ContestCountdown = new Lang.Class({
     let timeDiff = this.contests.secondsTillNextContest();   
     if (timeDiff >= 0) {
       if(timeDiff == Infinity) {
-        timerText = "No upcoming contests.";
+        timerText = "No upcoming contests";
       } else {
         var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
         var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -132,9 +132,9 @@ const ContestCountdown = new Lang.Class({
       }    
     } else {
       if (timeDiff == -1) {
-        timerText = "Loading data.";
+        timerText = "Loading data";
       } else {
-        timerText = "Failed to load data.";
+        timerText = "Failed to load data";
       } 
     }
     return timerText;
