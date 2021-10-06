@@ -1,5 +1,19 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Contest Countdown",
-    "version": "0.1"
+    "version": "0.1",
+    "background":{
+        "service_worker":"background.js"
+    },
+    "chrome_url_overrides" : {
+        "newtab": "index.html"
+      },
+      "icons": { "16": "assets/icons/schandu-eng/16.png",
+        "48": "assets/icons/schandu-eng/48.png",
+       "128": "assets/icons/schandu-eng/128.png" }
+
+
+
+
+
 }
