@@ -6,11 +6,11 @@
         "service_worker":"background.js"
     },
     "chrome_url_overrides" : {
-        "pageToOverride": "index.html"
+        "newtab": "index.html"
       },
-      "icons": { "16": "assets/icons/16.png",
-        "48": "assets/icons/48.png",
-       "128": "assets/icons/128.png" }
+      "icons": { "16": "assets/icons/schandu-eng/16.png",
+        "48": "assets/icons/schandu-eng/48.png",
+       "128": "assets/icons/schandu-eng/128.png" }
 
 
 
