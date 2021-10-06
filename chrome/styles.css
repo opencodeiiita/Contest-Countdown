@@ -1,6 +1,7 @@
 html,
 body {
     height: 100%;
+    background-color: rgb(4, 39, 67);
 }
 #container {
     height: 100%;
@@ -11,7 +12,17 @@ body {
 }
 #timer {
     text-align: center;
+    color: white;
     font-size: 60px;
     padding: 50px;
 }
 
+.contestDiv {
+    padding: 20px;
+    background-color: rgb(19, 70, 110);
+    color: white;
+    text-align: center;
+    font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+
+    border: 4px solid rgb(4, 39, 67);
+}
