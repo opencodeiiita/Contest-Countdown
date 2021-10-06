@@ -138,7 +138,12 @@ const ContestCountdown = new Lang.Class({
 
     return timerText;
   },
-
+  
+  _refreshUI: function (data) {
+    let txt = data.toString();
+    this.buttonText.set_text(txt);
+  },
+  
   stop: function () {
     if (_httpSession !== undefined) _httpSession.abort();
     _httpSession = undefined;
