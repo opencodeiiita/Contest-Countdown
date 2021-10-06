@@ -119,23 +119,24 @@ const ContestCountdown = new Lang.Class({
   // @return: string
   _getTimerText: function () {
     var timerText;
-
-    let timeDiff = this.contests.secondsTillNextContest();
-
+    let timeDiff = this.contests.secondsTillNextContest();   
     if (timeDiff >= 0) {
-      var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+      if(timeDiff == Infinity) {
+        timerText = "No upcoming contests.";
+      } else {
+        var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
 
-      timerText = days + "d " + hours + "h " + minutes + "m ";
+        timerText = days + "d " + hours + "h " + minutes + "m ";
+      }    
     } else {
       if (timeDiff == -1) {
         timerText = "Loading data.";
       } else {
-        timerText = "No upcoming contests.";
+        timerText = "Failed to load data.";
       } 
     }
-
     return timerText;
   },
   
