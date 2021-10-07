@@ -17,28 +17,31 @@ body {
     padding: 50px;
 }
 
+#contests {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
+}
+
 .contestDiv {
     background-color: rgb(19, 70, 110);
     color: white;
     text-align: center;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    width: 30%;
-    /* border-top: 5px solid rgb(4, 39, 67); */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    padding: 20px;
 }
-.contestName{
-    font-size: 18px;
+.contestName {
+    font-size: 20px;
     font-weight: 400;
     margin-bottom: 1px;
 }
-p{
+p {
     margin-top: 2px;
-    font-size: 12px;
+    font-size: 18px;
     font-weight: lighter;
     margin-bottom: 1px;
 }
-hr{
-    width:80%; background-color: white;
-}
-.link{
+.link {
     color: white;
+    font-size: 16px;
 }

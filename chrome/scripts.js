@@ -1,4 +1,3 @@
-
 function remainingTime(targetDate) {
     var currentDate = new Date().getTime();
     var interval = targetDate - currentDate;
@@ -39,66 +38,46 @@ var timeinterval = setInterval(runClock, 1000);
 
 // @return none
 function displayContests(allContests) {
-    if(!allContests) return;
-    const container = document.getElementById("container");
+    if (!allContests) return;
+    const container = document.getElementById("contests");
     // console.log("hello");
     // console.log("hello");
     allContests.map((contest) => {
         let element = document.createElement("div");
         element.className = "contestDiv";
         const nametext = document.createElement("p");
-        nametext.innerHTML = `Contest name:- ${contest.Name}`;
+        nametext.innerHTML = `${contest.Name}`;
         nametext.className = "contestName";
 
         const platform = document.createElement("p");
-        platform.innerHTML = `Platform:- ${contest.Platform}`;
+        platform.innerHTML = `${contest.Platform}`;
         platform.className = "contestPlatform";
         // console.log(contest.name);
 
         const startime = document.createElement("p");
-        startime.innerHTML = `Start Time:- ${contest.StartTime}`;
+        startime.innerHTML = `Start Time: ${contest.StartTime}`;
         startime.className = "startime";
 
         const endtime = document.createElement("p");
-        endtime.innerHTML = `End Time:- ${contest.EndTime}`;
+        endtime.innerHTML = `End Time: ${contest.EndTime}`;
         endtime.className = "endtime";
 
         const duration = document.createElement("p");
-        duration.innerHTML = `Duration :- ${contest.Duration}`;
+        duration.innerHTML = `Duration: ${contest.Duration}`;
         duration.className = "duration";
-        
+
         const link = document.createElement("a");
-        link.href= `${contest.url}`;
-        link.innerHTML = `Contest link`;
+        link.href = `${contest.url}`;
+        link.innerHTML = `Compete`;
         link.className = "link";
 
-
-        const line = document.createElement("hr");
         element.appendChild(nametext);
         element.appendChild(platform);
         element.appendChild(startime);
+        element.appendChild(endtime);
         element.appendChild(duration);
         element.appendChild(link);
-        element.appendChild(line);
+
         container.appendChild(element);
     });
 }
-displayContests([{
-        
-        "Name": "Data Story Telling", 
-        "Platform": "HACKEREARTH",  
-        "StartTime": "Fri, 15 Oct 2021 18:00", 
-        "EndTime": "Sun, 24 Oct 2021 23:55", 
-        "Duration": "9 days 5h 55m", 
-        "challenge_type": "contest", 
-        "url": "https://www.hackerearth.com/challenges/hiring/data-story-telling/"
-      },{
-        
-        "Name": "Data Story Telling", 
-        "Platform": "HACKEREARTH",  
-        "StartTime": "Fri, 15 Oct 2021 18:00", 
-        "EndTime": "Sun, 24 Oct 2021 23:55", 
-        "Duration": "9 days 5h 55m", 
-        "challenge_type": "contest", 
-        "url": "https://www.hackerearth.com/challenges/hiring/data-story-telling/"
-      }]);
