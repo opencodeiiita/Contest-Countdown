@@ -26,16 +26,19 @@ body {
     /* border-top: 5px solid rgb(4, 39, 67); */
 }
 .contestName{
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 18px;
+    font-weight: 400;
     margin-bottom: 1px;
 }
-h4{
+p{
     margin-top: 2px;
-    font-size: 15px;
+    font-size: 12px;
     font-weight: lighter;
     margin-bottom: 1px;
 }
 hr{
-     width:80%; background-color: white;
+    width:80%; background-color: white;
+}
+.link{
+    color: white;
 }

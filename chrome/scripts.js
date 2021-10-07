@@ -39,6 +39,7 @@ var timeinterval = setInterval(runClock, 1000);
 
 // @return none
 function displayContests(allContests) {
+    if(!allContests) return;
     const container = document.getElementById("container");
     // console.log("hello");
     // console.log("hello");
@@ -67,15 +68,14 @@ function displayContests(allContests) {
         duration.className = "duration";
         
         const link = document.createElement("a");
-        link.setAttribute('href') = `${contest.url}`;
-        link.innerHTML = `Contest link :- ${contest.url}`;
+        link.href= `${contest.url}`;
+        link.innerHTML = `Contest link`;
         link.className = "link";
 
 
         const line = document.createElement("hr");
         element.appendChild(nametext);
         element.appendChild(platform);
-        element.appendChild(startDate);
         element.appendChild(startime);
         element.appendChild(duration);
         element.appendChild(link);
@@ -86,11 +86,19 @@ function displayContests(allContests) {
 displayContests([{
         
         "Name": "Data Story Telling", 
-        Platform: "HACKEREARTH",  
-       
-        StartTime: "Fri, 15 Oct 2021 18:00", 
-        EndTime: "Sun, 24 Oct 2021 23:55", 
-        Duration: "9 days 5h 55m", 
-        challenge_type: "contest", 
-        url: "https://www.hackerearth.com/challenges/hiring/data-story-telling/"
+        "Platform": "HACKEREARTH",  
+        "StartTime": "Fri, 15 Oct 2021 18:00", 
+        "EndTime": "Sun, 24 Oct 2021 23:55", 
+        "Duration": "9 days 5h 55m", 
+        "challenge_type": "contest", 
+        "url": "https://www.hackerearth.com/challenges/hiring/data-story-telling/"
+      },{
+        
+        "Name": "Data Story Telling", 
+        "Platform": "HACKEREARTH",  
+        "StartTime": "Fri, 15 Oct 2021 18:00", 
+        "EndTime": "Sun, 24 Oct 2021 23:55", 
+        "Duration": "9 days 5h 55m", 
+        "challenge_type": "contest", 
+        "url": "https://www.hackerearth.com/challenges/hiring/data-story-telling/"
       }]);
