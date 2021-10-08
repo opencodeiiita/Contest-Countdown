@@ -119,32 +119,40 @@ const ContestCountdown = new Lang.Class({
   // @return: string
   _getTimerText: function () {
     var timerText;
-    let timeDiff = this.contests.secondsTillNextContest();   
-    if (timeDiff >= 0) {
-      if(timeDiff == Infinity) {
+    let timeDiff = this.contests.secondsTillNextContest();
+    //Checking
+    //Return a string(based on the amount of time left for the contest) 
+    //Send a notification of the name of the contest and the time left
+      if(timeDiff == Infinity){
         timerText = "No upcoming contests";
-      } else {
+      }
+      else if(timeDiff>=0){
         var days = Math.floor(timeDiff / (1000 * 60 * 60 * 24));
         var hours = Math.floor((timeDiff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         var minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds=Math.floor((timediff % (1000*60)) / (1000));
 
-        timerText = days + "d " + hours + "h " + minutes + "m ";
-      }    
-    } else {
-      if (timeDiff == -1) {
+        if(this.settings.get_boolean("show_seconds")){
+          timerText = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+        }
+          else{
+          timerText = days + "d " + hours + "h " + minutes + "m ";
+        }
+      }
+      else if(timeDiff == -1){
         timerText = "Loading data";
-      } else {
+      } else{
         timerText = "Failed to load data";
-      } 
-    }
+      }
     return timerText;
+    Main.notify('Contest Alert ', this.contests.nextContest + ' will begin in ' + days? `${days} days ` : '' + hours? `${hours} hours ` : '' + minutes + 'minutes ' + seconds? `and ${seconds} seconds` : '' );
   },
-  
+
   _refreshUI: function (data) {
     let txt = data.toString();
     this.buttonText.set_text(txt);
   },
-  
+
   stop: function () {
     if (_httpSession !== undefined) _httpSession.abort();
     _httpSession = undefined;
