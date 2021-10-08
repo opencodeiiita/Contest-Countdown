@@ -34,6 +34,50 @@ function runClock(targetDate) {
 var timeinterval = setInterval(runClock, 1000);
 
 // Issue #10: Write html and javascript to display contests from the paramter array
-// @params allContests: array of contest-obeject (refer to backgroung.js)
+// @params allContests: array of contest-obeject (refer to backgroung.js)/
+
 // @return none
-function displayContests() {}
+function displayContests(allContests) {
+    if (!allContests) return;
+    const container = document.getElementById("contests");
+    // console.log("hello");
+    // console.log("hello");
+    allContests.map((contest) => {
+        let element = document.createElement("div");
+        element.className = "contestDiv";
+        const nametext = document.createElement("p");
+        nametext.innerHTML = `${contest.Name}`;
+        nametext.className = "contestName";
+
+        const platform = document.createElement("p");
+        platform.innerHTML = `${contest.Platform}`;
+        platform.className = "contestPlatform";
+        // console.log(contest.name);
+
+        const startime = document.createElement("p");
+        startime.innerHTML = `Start Time: ${contest.StartTime}`;
+        startime.className = "startime";
+
+        const endtime = document.createElement("p");
+        endtime.innerHTML = `End Time: ${contest.EndTime}`;
+        endtime.className = "endtime";
+
+        const duration = document.createElement("p");
+        duration.innerHTML = `Duration: ${contest.Duration}`;
+        duration.className = "duration";
+
+        const link = document.createElement("a");
+        link.href = `${contest.url}`;
+        link.innerHTML = `Compete`;
+        link.className = "link";
+
+        element.appendChild(nametext);
+        element.appendChild(platform);
+        element.appendChild(startime);
+        element.appendChild(endtime);
+        element.appendChild(duration);
+        element.appendChild(link);
+
+        container.appendChild(element);
+    });
+}
