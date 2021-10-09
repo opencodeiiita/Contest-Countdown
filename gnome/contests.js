@@ -67,6 +67,7 @@ var Contests = class {
         if (response.status != "OK") throw "Got non OK status";
 
         this.updateContests(response.result);
+        
 
         // if successful after retries, restore these
         this.retriesLeft = 5;
@@ -102,7 +103,43 @@ var Contests = class {
   // TODO: Issue#6
   // use the newContest array to update the existing this.allContests array **efficiently**
   // since original array contains more information, only add entries dont remove any
-  updateContests(newContests) {}
+  updateContests(newContests) 
+  {
+    newContests=this.filterContest(newContests);//all the contests which are yet to occur in a sorted manner(according to the starting time)
+    let n=newContests.length;
+    let p1=0,p2=0;
+    while(p1!=n)
+    {
+        let curr1=newContests[p1].id;
+        let curr2=allContests[p2].id;
+        if(curr2===curr1)
+        {
+            p1++;
+            p2++;
+            continue;
+        }
+        else
+        {
+            if(curr1.phase==="BEFORE")
+            {
+            allContests.push(curr1);
+            console.log(curr1);
+            p1++;
+            continue;
+            }
+            else
+            {
+                p1++;
+                continue;
+            }
+        }
+    }
+    allConetsts.sort((a, b) => {
+      return a.startTimeSeconds - b.startTimeSeconds;
+    });
+    return allContests;
+}
+
 
   // TODO: Issue#7
   // remove all contest object from the contests array that have already occured
