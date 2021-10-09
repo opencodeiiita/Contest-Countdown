@@ -12,15 +12,15 @@ const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Self = ExtensionUtils.getCurrentExtension();
 
-const CODEFORCES_API_URL = "https://codeforces.com/api/contest.list?gym=false";
+const CODEFORCES_API_URL = 'https://codeforces.com/api/contest.list?gym=false';
 
 var Contests = class {
   constructor() {
     // https://github.com/ifl0w/RandomWallpaperGnome3/blob/develop/randomwallpaper%40iflow.space/wallpaperController.js
-    let xdg_cache_home = GLib.getenv("XDG_CACHE_HOME");
-    if (!xdg_cache_home) xdg_cache_home = `${GLib.getenv("HOME")}/.cache`;
-    this.cacheLocation = `${xdg_cache_home}/${Self.metadata["uuid"]}/`;
-    this.cacheFile = this.cacheLocation + "contest.json";
+    let xdg_cache_home = GLib.getenv('XDG_CACHE_HOME');
+    if (!xdg_cache_home) xdg_cache_home = `${GLib.getenv('HOME')}/.cache`;
+    this.cacheLocation = `${xdg_cache_home}/${Self.metadata['uuid']}/`;
+    this.cacheFile = this.cacheLocation + 'contest.json';
 
     // This array stores all the contests information
     // each member of the array is an object with *atleast* these fields:
@@ -59,15 +59,14 @@ var Contests = class {
     // TODO: Issue#8
     // We want to expand to other sites as ell
     // Create adapter class for codeforces,
-    let message = Soup.Message.new("GET", CODEFORCES_API_URL);
+    let message = Soup.Message.new('GET', CODEFORCES_API_URL);
 
     session.queue_message(message, (session, message) => {
       try {
         let response = JSON.parse(message.response_body.data);
-        if (response.status != "OK") throw "Got non OK status";
+        if (response.status != 'OK') throw 'Got non OK status';
 
         this.updateContests(response.result);
-        
 
         // if successful after retries, restore these
         this.retriesLeft = 5;
@@ -78,9 +77,9 @@ var Contests = class {
         );
       } catch (e) {
         global.log(
-          "ContestCountdown: Contest refresh failed\n retry left " +
+          'ContestCountdown: Contest refresh failed\n retry left ' +
             this.retriesLeft +
-            "\n" +
+            '\n' +
             e
         );
 
@@ -103,43 +102,33 @@ var Contests = class {
   // TODO: Issue#6
   // use the newContest array to update the existing this.allContests array **efficiently**
   // since original array contains more information, only add entries dont remove any
-  updateContests(newContests) 
-  {
-    newContests=this.filterContest(newContests);//all the contests which are yet to occur in a sorted manner(according to the starting time)
-    let n=newContests.length;
-    let p1=0,p2=0;
-    while(p1!=n)
-    {
-        let curr1=newContests[p1].id;
-        let curr2=allContests[p2].id;
-        if(curr2===curr1)
-        {
-            p1++;
-            p2++;
-            continue;
+  updateContests(newContests) {
+    newContests = this.filterContest(newContests); //all the contests which are yet to occur in a sorted manner(according to the starting time)
+    let n = newContests.length;
+    let p1 = 0,
+      p2 = 0;
+    while (p1 != n) {
+      let curr1 = newContests[p1].id;
+      let curr2 = allContests[p2].id;
+      if (curr2 === curr1) {
+        p1++;
+        p2++;
+        continue;
+      } else {
+        if (curr1.phase === 'BEFORE') {
+          this.allContests.push(newContests[p1]);
+          p1++;
+          continue;
+        } else {
+          p1++;
+          continue;
         }
-        else
-        {
-            if(curr1.phase==="BEFORE")
-            {
-            allContests.push(curr1);
-            console.log(curr1);
-            p1++;
-            continue;
-            }
-            else
-            {
-                p1++;
-                continue;
-            }
-        }
+      }
     }
-    allConetsts.sort((a, b) => {
+    this.allContests.sort((a, b) => {
       return a.startTimeSeconds - b.startTimeSeconds;
     });
-    return allContests;
-}
-
+  }
 
   // TODO: Issue#7
   // remove all contest object from the contests array that have already occured
