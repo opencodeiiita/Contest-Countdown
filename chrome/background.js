@@ -16,7 +16,6 @@ var allContests = [];
 // Issue #9: Use http://contesttrackerapi.herokuapp.com/ api to get the list of all upcoming contests (and store it in allContests)
 // @return nothing
 function updateContests() {
-    const fetch = require('node-fetch');
     let url = 'https://contesttrackerapi.herokuapp.com/';
     fetch(url)
     .then(res => res.json())
@@ -57,50 +56,8 @@ function nextContests(){
 }
 
 // filterContest function removes all the contests from the list whose starting time has already passed
+// also it sorts the contests in order of which contest will start first
 function filterContest(){
-    
-    while(check(allContests[0].StartTime)==false)
-    {
-        allContests.splice(0,1);
-    }
-    
-}
-
-// check takes StartTime as string and returns whether the time has passed or not
-// returns true if time will come, returns false if time has already passed  
-function check(date){
-    var user=new Date(date);
-    var current=new Date();
-    if(current.getFullYear()>user.getFullYear()){
-        return false;
-    }else if(current.getFullYear()<user.getFullYear()){
-        return true;
-    }else{
-
-        if(current.getMonth()>user.getMonth()){
-            return false;
-        }else if(current.getMonth()<user.getMonth()){
-            return true;
-        }else{
-                 
-            if(current.getDate()>user.getDate() ){
-                return false;
-            }else if(current.getDate()<user.getDate()){
-                return true;
-            }else{
-
-                  if(current.getTime()>user.getTime()){
-                    return false;
-                  }else if(current.getTime()<user.getTime()){
-                    return true;
-                  }else{
-                    return true;
-                  }
-
-            }
-
-        }
-
-    }
-    
+    allContests = allContests.filter(current => new Date(current.StartTime) > new Date());
+    allContests.sort((a, b) => a.StartTime - b.StartTime);
 }
