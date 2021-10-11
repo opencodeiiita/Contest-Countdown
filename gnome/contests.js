@@ -38,12 +38,22 @@ var Contests = class {
 
     loadFromFile() {
         // TODO: Issue#5
-        // Load the contest of the the cache file, parse the json within and then use updateContestsand setNextContest
+        // Load the contents of the the cache file, parse the json within and then use `updateContests` and `setNextContest`
+
+        fs.readFileSync(this.cacheFile, function(error, data) {
+                        this.allContests = JSON.parse(data);
+                        this.updateContests(this.allContests);
+                        this.setNextContest();
+        });
     }
 
     saveToFile() {
         // TODO: Issue#5
-        // Save this.allContests array to the cache file (this.cacheFile)
+        // Save `this.allContests` array to the cache file `this.cacheFile`
+
+        fs.writeFileSync(this.cacheFile, JSON.stringify(this.allContests), function(error) {
+
+        });
     }
 
     refresh() {
