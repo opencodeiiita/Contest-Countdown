@@ -105,6 +105,7 @@ var Contests = class {
                 continue;
             } else {
                 if (curr1.phase === "BEFORE") {
+                    newContests[p1].participating = true;
                     this.allContests.push(newContests[p1]);
                     p1++;
                     continue;
@@ -121,7 +122,15 @@ var Contests = class {
 
     // TODO: Issue#7
     // remove all contest object from the contests array that have already occured
-    _filterContest(contests) {}
+    _filterContest(contests) {
+        contests = contests.filter((contest) => contest.phase == "BEFORE" && this.secondsTillContest(contest) >= 0);
+
+        contests.sort((a, b) => {
+            return parseInt(a.startTimeSeconds) - parseInt(b.startTimeSeconds)
+        });
+
+        return contests;
+    }
 
     secondsTillContest(contest) {
         return Math.floor((new Date(contest.startTimeSeconds * 1000) - new Date()) / 1000);
@@ -129,7 +138,16 @@ var Contests = class {
 
     // TODO: Issue #7
     // set this.nextContest to the nearest contest that user is participating in
-    setNextContest() {}
+    setNextContest() {
+        this.nextContest = null;
+        for (const contest of this.allContests) {
+            if (contest.participating) {
+                this.nextContest = contest;
+                return;
+            }
+        }
+
+    }
 
     // returns the seconds till this.nextContest
     // when no next contest
