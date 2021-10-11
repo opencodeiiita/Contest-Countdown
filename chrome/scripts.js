@@ -1,3 +1,15 @@
+function init() {
+    chrome.runtime.sendMessage({ order: "nextContest" }, function () {
+        nextContest = nextContests();
+    });
+
+    chrome.runtime.sendMessage({ command: "allContest" }, function () {
+        displayContests(allContests);
+    });
+
+    date = nextContest.startTime;
+}
+
 function remainingTime(targetDate) {
     var currentDate = new Date().getTime();
     var interval = targetDate - currentDate;
@@ -14,6 +26,7 @@ function remainingTime(targetDate) {
         seconds: seconds,
     };
 }
+
 
 function setClock(date) {
     var time = remainingTime(date);
@@ -81,3 +94,5 @@ function displayContests(allContests) {
         container.appendChild(element);
     });
 }
+
+
