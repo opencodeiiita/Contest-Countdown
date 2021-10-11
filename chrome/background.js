@@ -23,30 +23,15 @@ function updateContests() {
         for(let i = 0;i<Object.keys(out.result.upcoming).length;i++)
         {
             let curr = out.result.upcoming[i];
-            let curr_url = curr.url;
-            let flag = 1; 
-            for(let j = 0;j<Object.keys(allContests);j++)
-            {
-                let existing_url = allContests[i].url;
-                if(existing_url === curr_url)
-                {
-                    flag = 0;
-                    break;
-                }
-
-            }
-            if(flag == 1)
-            {
-                allContests.push(curr);
-            }
-
-               
+            allContests.push(curr);
         }
-        // nextContests();
+        const uniqueObjects = [...new Map(allContests.map(item => [item.url, item])).values()];
+        allContests = uniqueObjects;
     })
     
  
 }
+
 
 // Issue #9: create a function that will give the nearest upcoming contest
 // @return a contest-object
