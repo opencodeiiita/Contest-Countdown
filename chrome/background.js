@@ -16,7 +16,6 @@ var allContests = [];
 // Issue #9: Use http://contesttrackerapi.herokuapp.com/ api to get the list of all upcoming contests (and store it in allContests)
 // @return nothing
 function updateContests() {
-    const fetch = require('node-fetch');
     let url = 'https://contesttrackerapi.herokuapp.com/';
     fetch(url)
     .then(res => res.json())
@@ -24,30 +23,15 @@ function updateContests() {
         for(let i = 0;i<Object.keys(out.result.upcoming).length;i++)
         {
             let curr = out.result.upcoming[i];
-            let curr_url = curr.url;
-            let flag = 1; 
-            for(let j = 0;j<Object.keys(allContests);j++)
-            {
-                let existing_url = allContests[i].url;
-                if(existing_url === curr_url)
-                {
-                    flag = 0;
-                    break;
-                }
-
-            }
-            if(flag == 1)
-            {
-                allContests.push(curr);
-            }
-
-               
+            allContests.push(curr);
         }
-        // nextContests();
+        const uniqueObjects = [...new Map(allContests.map(item => [item.url, item])).values()];
+        allContests = uniqueObjects;
     })
     
  
 }
+
 
 // Issue #9: create a function that will give the nearest upcoming contest
 // @return a contest-object
@@ -57,50 +41,8 @@ function nextContests(){
 }
 
 // filterContest function removes all the contests from the list whose starting time has already passed
+// also it sorts the contests in order of which contest will start first
 function filterContest(){
-    
-    while(check(allContests[0].StartTime)==false)
-    {
-        allContests.splice(0,1);
-    }
-    
-}
-
-// check takes StartTime as string and returns whether the time has passed or not
-// returns true if time will come, returns false if time has already passed  
-function check(date){
-    var user=new Date(date);
-    var current=new Date();
-    if(current.getFullYear()>user.getFullYear()){
-        return false;
-    }else if(current.getFullYear()<user.getFullYear()){
-        return true;
-    }else{
-
-        if(current.getMonth()>user.getMonth()){
-            return false;
-        }else if(current.getMonth()<user.getMonth()){
-            return true;
-        }else{
-                 
-            if(current.getDate()>user.getDate() ){
-                return false;
-            }else if(current.getDate()<user.getDate()){
-                return true;
-            }else{
-
-                  if(current.getTime()>user.getTime()){
-                    return false;
-                  }else if(current.getTime()<user.getTime()){
-                    return true;
-                  }else{
-                    return true;
-                  }
-
-            }
-
-        }
-
-    }
-    
+    allContests = allContests.filter(current => new Date(current.StartTime) > new Date());
+    allContests.sort((a, b) => a.StartTime - b.StartTime);
 }
