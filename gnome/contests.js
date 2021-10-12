@@ -63,6 +63,7 @@ var Contests = class {
         session.queue_message(message, (session, message) => {
             try {
                 let response = JSON.parse(message.response_body.data);
+                global.log(response);
 
                 this.updateContests(response.result.upcoming);
 
