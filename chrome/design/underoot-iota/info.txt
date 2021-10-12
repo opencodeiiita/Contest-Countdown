@@ -1,0 +1,8 @@
+1st pic is of the defualt design of extension
+
+2nd pic is of the expanded version of the ext.
+
+3rd pic is of all the details about various contests
+
+since, i dont know the details or features (i mean do you wanna show contest start time, end time, its running or not,
+its duration,etc) that'll be shown in the ext., so the details section is empty
