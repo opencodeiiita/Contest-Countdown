@@ -189,9 +189,6 @@ var AllContestHeading = GObject.registerClass(
                 style_class: "cc-contest-heading",
             });
             this.actor.add_child(this._headingLabel);
-            this.actor.connect("button-press-event", function () {
-                Util.spawn(["xdg-open", "https://codeforces.com/contests"]); // isda nahi pata chaleya
-            });
         }
     }
 );

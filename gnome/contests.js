@@ -43,10 +43,10 @@ var Contests = class {
     }
 
     //Issue #7: complete this function, also call set Next contest and update contest
-    loadFromFile() {}
+    loadFromFile() { }
 
     //Issue #7: complete this function
-    saveToFile() {}
+    saveToFile() { }
 
     refresh() {
         this.retriesLeft--;
@@ -63,7 +63,7 @@ var Contests = class {
         session.queue_message(message, (session, message) => {
             try {
                 let response = JSON.parse(message.response_body.data);
-                
+
                 this.updateContests(response.result.upcoming);
 
                 // if successful after retries, restore these
@@ -103,17 +103,17 @@ var Contests = class {
     }
 
     _filterContest(contests) {
-        contests = contests.filter((contest) => contest.StartTime && (new Date(current.StartTime) > new Date()) && this.secondsTillContest(contest) >= 0);
+        contests = contests.filter((contest) => contest.StartTime && (new Date(contest.StartTime) > new Date()));
 
         contests.sort((a, b) => {
-            return a.StartTime - b.StartTime;
+            return new Date(a.StartTime) - new Date(b.StartTime);
         });
 
         return contests;
     }
 
     secondsTillContest(contest) {
-        return Math.floor((new Date(contest.StartTime)  - new Date() )/1000 );
+        return Math.floor((new Date(contest.StartTime) - new Date()) / 1000);
     }
 
     setNextContest() {
