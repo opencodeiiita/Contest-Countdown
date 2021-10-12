@@ -15,17 +15,19 @@ var allContests = [];
 function init() {
     updateContests();
 
-    chrome.runtime.onMessage.addListener(function(request, sender , sendResponse) {
+    setTimeout(
+        updateContests
+        , 1000 * 60 * 60);
+
+    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         if (request.command === "allContest")
-        sendResponse({"allContests":allContests});
+            sendResponse({ "allContests": allContests });
 
         else
-        sendResponse({response:"invalid"});
+            sendResponse({ response: "invalid" });
     });
 
-    // // setTimeout(function () {
-    // //     updateContests();
-    // // }, 1000 * 60 * 60);
+
 }
 
 

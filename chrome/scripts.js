@@ -1,9 +1,12 @@
 function init() {
     chrome.runtime.sendMessage({ command: "allContest" }, function (response) {
-            console.log("response", response);
+        if (response.allContests.length === 0)
+            setTimeout(init, 1000);
+
+        else {
             runClock(new Date(response.allContests[0].StartTime));
             displayContests(response.allContests);
-        
+        }
     });
 }
 
