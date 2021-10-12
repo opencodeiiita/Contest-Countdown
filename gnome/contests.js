@@ -22,29 +22,20 @@ var Contests = class {
         this.cacheLocation = `${xdg_cache_home}/${Self.metadata["uuid"]}/`;
         this.cacheFile = this.cacheLocation + "contest.json";
 
-        // This array stores all the contests information
-        // each member of the array is an object with *atleast* these fields:
-        //          name(string), startTimeSeconds(int), durationSeconds(int), participating(bool)
-        // this.allContests = [{name: "example cf round 89", startTimeSeconds: 19900399, durationSeconds: 1290}]
-        this.allContests = [];
-
         this.retriesLeft = 5;
         this.retryTime = 1;
         this.refreshTimeout = null;
+        this.allContests = [];
         this.nextContest = null;
         this.loadFromFile();
         this.refresh();
     }
 
-    loadFromFile() {
-        // TODO: Issue#5
-        // Load the contest of the the cache file, parse the json within and then use updateContestsand setNextContest
-    }
+    //Issue #7: complete this function, also call set Next contest and update contest
+    loadFromFile() {}
 
-    saveToFile() {
-        // TODO: Issue#5
-        // Save this.allContests array to the cache file (this.cacheFile)
-    }
+    //Issue #7: complete this function
+    saveToFile() {}
 
     refresh() {
         this.retriesLeft--;
@@ -56,9 +47,6 @@ var Contests = class {
         }
 
         let session = new Soup.SessionAsync();
-        // TODO: Issue#8
-        // We want to expand to other sites as ell
-        // Create adapter class for codeforces,
         let message = Soup.Message.new("GET", CODEFORCES_API_URL);
 
         session.queue_message(message, (session, message) => {
@@ -88,54 +76,46 @@ var Contests = class {
         });
     }
 
-    // TODO: Issue#6
-    // use the newContest array to update the existing this.allContests array **efficiently**
-    // since original array contains more information, only add entries dont remove any
     updateContests(newContests) {
-        newContests = this._filterContest(newContests); //all the contests which are yet to occur in a sorted manner(according to the starting time)
-        let n = newContests.length;
-        let p1 = 0,
-            p2 = 0;
-        while (p1 != n) {
-            let curr1 = newContests[p1].id;
-            let curr2 = allContests[p2].id;
-            if (curr2 === curr1) {
-                p1++;
-                p2++;
-                continue;
-            } else {
-                if (curr1.phase === "BEFORE") {
-                    this.allContests.push(newContests[p1]);
-                    p1++;
-                    continue;
-                } else {
-                    p1++;
-                    continue;
-                }
+        newContests = this._filterContest(newContests);
+
+        newContests.forEach((contest) => {
+            if (!this.allContests.some((existingContest) => existingContest.id == contest.id)) {
+                if (!("participating" in contest)) contest.participating = true;
+                this.allContests.push(contest);
             }
-        }
-        this.allContests.sort((a, b) => {
-            return a.startTimeSeconds - b.startTimeSeconds;
         });
+
+        this.allContests = this._filterContest(this.allContests);
+
+        this.setNextContest();
+        this.saveToFile();
     }
 
-    // TODO: Issue#7
-    // remove all contest object from the contests array that have already occured
-    _filterContest(contests) {}
+    _filterContest(contests) {
+        contests = contests.filter((contest) => contest.startTimeSeconds && contest.phase == "BEFORE" && this.secondsTillContest(contest) >= 0);
+
+        contests.sort((a, b) => {
+            return parseInt(a.startTimeSeconds) - parseInt(b.startTimeSeconds);
+        });
+
+        return contests;
+    }
 
     secondsTillContest(contest) {
         return Math.floor((new Date(contest.startTimeSeconds * 1000) - new Date()) / 1000);
     }
 
-    // TODO: Issue #7
-    // set this.nextContest to the nearest contest that user is participating in
-    setNextContest() {}
+    setNextContest() {
+        this.nextContest = null;
+        this.allContests = this._filterContest(this.allContests);
+        for (let contest of this.allContests)
+            if (contest.participating) {
+                this.nextContest = contest;
+                break;
+            }
+    }
 
-    // returns the seconds till this.nextContest
-    // when no next contest
-    // if still trying to load data, return -1
-    // if failed to load, return -Infinity
-    // if no upcoming contest, return Infinity
     secondsTillNextContest() {
         if (this.nextContest) {
             let timeDiff = this.secondsTillContest(this.nextContest);
@@ -145,6 +125,11 @@ var Contests = class {
                 return this.secondsTillNextContest();
             }
         } else {
+            // when no next contest
+            // if still trying to load data, return -1
+            // if failed to load, return -Infinity
+            // if no upcoming contest, return Infinity
+
             if (this.retriesLeft < 5) return -1;
             if (this.allContests.length == 0) return -Infinity;
             return Infinity;
