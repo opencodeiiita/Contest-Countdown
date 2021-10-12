@@ -1,15 +1,30 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" type="text/css" href="styles.css" />
-        <script src="scripts.js"></script>
-    </head>
-    <body>
-        <div id="container">
-            <div id="timer"></div>
-            <div id="contests"></div>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="scripts.js"></script>
+</head>
+
+<body>
+    <div id="container">
+        <div id="timer"></div>
+        <div id="contests"></div>
+        <div id="search" class="search-container">
+            <img src="./assets/Google.png" alt="Google" class="google-logo">
+            <div>
+                <form action="https://www.google.com/search" method="get" id="search-form">
+                    <div>
+                        <input autocomplete="off" type="text" name="q" id="search-input" placeholder="Search Google">
+                        <button type="submit" class="search-btn"><img src="./assets/SearchIcon.png"
+                                alt="SearchIcon"></button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <script src="scripts.js"></script>
-    </body>
+    </div>
+    <script src="scripts.js"></script>
+</body>
+
 </html>
