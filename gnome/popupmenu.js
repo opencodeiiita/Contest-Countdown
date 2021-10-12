@@ -48,8 +48,6 @@ var contestElement = GObject.registerClass(
             // add container to menu item
             this.actor.add_child(this._container);
 
-            // open registration page on click
-            
         }
         onClick() {
             this.contest.participating = this._checkbox.checked;
@@ -135,8 +133,6 @@ var NextContestElement = GObject.registerClass(
 
             this.actor.add_child(this._container);
 
-            // open codeforces on click
-           
         }
         update() {
             if (this.contests.nextContest != this.contest) {
