@@ -13,19 +13,19 @@
 var allContests = [];
 
 function init() {
-    chrome.runtime.onMessage.addListener(function (request) {
+    updateContests();
+
+    chrome.runtime.onMessage.addListener(function(request, sender , sendResponse) {
         if (request.command === "allContest")
-            return allContests;
+        sendResponse({"allContests":allContests});
+
+        else
+        sendResponse({response:"invalid"});
     });
 
-    chrome.runtime.onMessage.addListener(function (request) {
-        if (request.order === "nextContest")
-            return nextContests();
-    });
-
-    setTimeout(function () {
-        updateContests();
-    }, 1000 * 60 * 60);
+    // // setTimeout(function () {
+    // //     updateContests();
+    // // }, 1000 * 60 * 60);
 }
 
 
@@ -47,17 +47,10 @@ function updateContests() {
 
 }
 
-
-// Issue #9: create a function that will give the nearest upcoming contest
-// @return a contest-object
-function nextContests() {
-    filterContest();
-    return allContests[0];
-}
-
 // filterContest function removes all the contests from the list whose starting time has already passed
 // also it sorts the contests in order of which contest will start first
 function filterContest() {
     allContests = allContests.filter(current => new Date(current.StartTime) > new Date());
     allContests.sort((a, b) => a.StartTime - b.StartTime);
 }
+init();

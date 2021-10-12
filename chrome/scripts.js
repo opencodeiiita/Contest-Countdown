@@ -1,14 +1,12 @@
 function init() {
-    chrome.runtime.sendMessage({ order: "nextContest" }, function () {
-        nextContest = nextContests();
+    chrome.runtime.sendMessage({ command: "allContest" }, function (response) {
+            console.log("response", response);
+            runClock(new Date(response.allContests[0].StartTime));
+            displayContests(response.allContests);
+        
     });
-
-    chrome.runtime.sendMessage({ command: "allContest" }, function () {
-        displayContests(allContests);
-    });
-
-    date = nextContest.startTime;
 }
+
 
 function remainingTime(targetDate) {
     var currentDate = new Date().getTime();
@@ -27,7 +25,6 @@ function remainingTime(targetDate) {
     };
 }
 
-
 function setClock(date) {
     var time = remainingTime(date);
     document.getElementById("timer").innerHTML = time.days + "d " + time.hours + "h " + time.minutes + "m " + time.seconds + "s Left";
@@ -44,7 +41,6 @@ function runClock(targetDate) {
     }
     setClock(targetDate);
 }
-var timeinterval = setInterval(runClock, 1000);
 
 // Issue #10: Write html and javascript to display contests from the paramter array
 // @params allContests: array of contest-obeject (refer to backgroung.js)/
@@ -94,3 +90,4 @@ function displayContests(allContests) {
         container.appendChild(element);
     });
 }
+init();
