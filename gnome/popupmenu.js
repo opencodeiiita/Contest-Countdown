@@ -49,9 +49,7 @@ var contestElement = GObject.registerClass(
             this.actor.add_child(this._container);
 
             // open registration page on click
-            this.actor.connect("button-press-event", function () {
-                Util.spawn(["xdg-open" + contest.url]);
-            });
+            
         }
         onClick() {
             this.contest.participating = this._checkbox.checked;
@@ -138,10 +136,7 @@ var NextContestElement = GObject.registerClass(
             this.actor.add_child(this._container);
 
             // open codeforces on click
-            this.actor.connect("button-press-event", () => {
-                global.log("click");
-                Util.spawn(["xdg-open" + this.contests.nextContest.url]);
-            });
+           
         }
         update() {
             if (this.contests.nextContest != this.contest) {
