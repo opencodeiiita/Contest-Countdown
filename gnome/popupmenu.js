@@ -48,10 +48,6 @@ var contestElement = GObject.registerClass(
             // add container to menu item
             this.actor.add_child(this._container);
 
-            // open registration page on click
-            this.actor.connect("button-press-event", function () {
-                Util.spawn(["xdg-open", "https://codeforces.com/contestRegistration/" + contest.id]);
-            });
         }
         onClick() {
             this.contest.participating = this._checkbox.checked;
@@ -77,13 +73,20 @@ var ContestDetails = GObject.registerClass(
                 style_class: "cc-contest-name",
             });
             nameLabel.clutter_text.line_wrap = true;
+            
+            function durationSeconds(contest){
+                  return (new Date(contest.EndTime)- new Date(contest.StartTime))/1000 ;
+            }
+            function startTimeSeconds(contest){
+                return ( (new Date(contest.StartTime)- new Date() )/1000 ) ;
+          }
 
-            let hh = Math.floor(contest.durationSeconds / 3600);
-            let mm = Math.floor((contest.durationSeconds % 3600) / 60);
+            let hh = Math.floor(durationSeconds(contest) / 3600);
+            let mm = Math.floor((durationSeconds(contest) % 3600) / 60);
 
             var details =
-                `Date\t\t:  ${new Date(1000 * contest.startTimeSeconds).toLocaleFormat("%A %d %B %Y")} ` +
-                `\nTime\t\t:  ${new Date(1000 * contest.startTimeSeconds).toLocaleFormat("%r")} ` +
+                `Date\t\t:  ${new Date(1000 * startTimeSeconds(contest)).toLocaleFormat("%A %d %B %Y")} ` +
+                `\nTime\t\t:  ${new Date(1000 * startTimeSeconds(contest)).toLocaleFormat("%r")} ` +
                 `\nDuration\t:  ${hh} hours ${mm} minutes`;
 
             var detailsLabel = new St.Label({
@@ -130,11 +133,6 @@ var NextContestElement = GObject.registerClass(
 
             this.actor.add_child(this._container);
 
-            // open codeforces on click
-            this.actor.connect("button-press-event", () => {
-                global.log("click");
-                Util.spawn(["xdg-open", "https://codeforces.com/contestRegistration/" + this.contests.nextContest.id]);
-            });
         }
         update() {
             if (this.contests.nextContest != this.contest) {
@@ -182,9 +180,6 @@ var AllContestHeading = GObject.registerClass(
                 style_class: "cc-contest-heading",
             });
             this.actor.add_child(this._headingLabel);
-            this.actor.connect("button-press-event", function () {
-                Util.spawn(["xdg-open", "https://codeforces.com/contests"]);
-            });
         }
     }
 );
