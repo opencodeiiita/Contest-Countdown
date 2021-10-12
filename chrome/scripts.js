@@ -94,5 +94,3 @@ function displayContests(allContests) {
         container.appendChild(element);
     });
 }
-
-
