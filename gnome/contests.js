@@ -12,7 +12,18 @@ const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Self = ExtensionUtils.getCurrentExtension();
 
-const CODEFORCES_API_URL = "https://codeforces.com/api/contest.list?gym=false";
+const API_URL = "https://contesttrackerapi.herokuapp.com/";
+
+// contest =
+// {
+//      "Duration": "2h",
+//      "EndTime": "Sun, 12 Dec 2021 22:35",
+//      "Name": "Technocup 2022 - Elimination Round 3",
+//      "Platform": "CODEFORCES",
+//      "StartTime": "Sun, 12 Dec 2021 20:35",
+//      "url": "http://codeforces.com/contest/1585",
+//      "participating" : "true/false"
+//    },
 
 var Contests = class {
     constructor() {
@@ -47,14 +58,13 @@ var Contests = class {
         }
 
         let session = new Soup.SessionAsync();
-        let message = Soup.Message.new("GET", CODEFORCES_API_URL);
+        let message = Soup.Message.new("GET", API_URL);
 
         session.queue_message(message, (session, message) => {
             try {
                 let response = JSON.parse(message.response_body.data);
-                if (response.status != "OK") throw "Got non OK status";
-
-                this.updateContests(response.result);
+                
+                this.updateContests(response.result.upcoming);
 
                 // if successful after retries, restore these
                 this.retriesLeft = 5;
@@ -80,7 +90,7 @@ var Contests = class {
         newContests = this._filterContest(newContests);
 
         newContests.forEach((contest) => {
-            if (!this.allContests.some((existingContest) => existingContest.id == contest.id)) {
+            if (!this.allContests.some((existingContest) => existingContest.url == contest.url)) {
                 if (!("participating" in contest)) contest.participating = true;
                 this.allContests.push(contest);
             }
@@ -93,17 +103,17 @@ var Contests = class {
     }
 
     _filterContest(contests) {
-        contests = contests.filter((contest) => contest.startTimeSeconds && contest.phase == "BEFORE" && this.secondsTillContest(contest) >= 0);
+        contests = contests.filter((contest) => contest.StartTime && (new Date(current.StartTime) > new Date()) && this.secondsTillContest(contest) >= 0);
 
         contests.sort((a, b) => {
-            return parseInt(a.startTimeSeconds) - parseInt(b.startTimeSeconds);
+            return a.StartTime - b.StartTime;
         });
 
         return contests;
     }
 
     secondsTillContest(contest) {
-        return Math.floor((new Date(contest.startTimeSeconds * 1000) - new Date()) / 1000);
+        return Math.floor((new Date(contest.StartTime)  - new Date() )/1000 );
     }
 
     setNextContest() {
