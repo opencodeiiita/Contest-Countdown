@@ -103,7 +103,7 @@ var Contests = class {
     }
 
     _filterContest(contests) {
-        contests = contests.filter((contest) => contest.StartTime && (new Date(contest.StartTime) > new Date()));
+        contests = contests.filter((contest) =>  (new Date(contest.StartTime) > new Date()) && this.secondsTillContest(contest) >= 0);
 
         contests.sort((a, b) => {
             return new Date(a.StartTime) - new Date(b.StartTime);
