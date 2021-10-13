@@ -16,7 +16,4 @@ Take a look at [resources](resources.md) for learning resources, if you are not 
 ## Contributing
 * [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) and [git  clone](https://www.atlassian.com/git/tutorials/setting-up-a-repository/git-clone) this repository.
 * Comment below a issue, that you are reserving that issue and wait for confirmation by mentor. 
-* You can reserve at most two issues in a repo, for two days max. If you do not resolve the issue within 2 days, someone else might claim the issue
-
-
-
+* You can reserve at most one issue in a repo, for two days by default. If you do not resolve the issue within 2 days, someone else might claim the issue. 

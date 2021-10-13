@@ -12,129 +12,138 @@ const Lang = imports.lang;
 const ExtensionUtils = imports.misc.extensionUtils;
 const Self = ExtensionUtils.getCurrentExtension();
 
-const CODEFORCES_API_URL = "https://codeforces.com/api/contest.list?gym=false";
+const API_URL = "https://contesttrackerapi.herokuapp.com/";
+
+// contest =
+// {
+//      "Duration": "2h",
+//      "EndTime": "Sun, 12 Dec 2021 22:35",
+//      "Name": "Technocup 2022 - Elimination Round 3",
+//      "Platform": "CODEFORCES",
+//      "StartTime": "Sun, 12 Dec 2021 20:35",
+//      "url": "http://codeforces.com/contest/1585",
+//      "participating" : "true/false"
+//    },
 
 var Contests = class {
-  constructor() {
-    // https://github.com/ifl0w/RandomWallpaperGnome3/blob/develop/randomwallpaper%40iflow.space/wallpaperController.js
-    let xdg_cache_home = GLib.getenv("XDG_CACHE_HOME");
-    if (!xdg_cache_home) xdg_cache_home = `${GLib.getenv("HOME")}/.cache`;
-    this.cacheLocation = `${xdg_cache_home}/${Self.metadata["uuid"]}/`;
-    this.cacheFile = this.cacheLocation + "contest.json";
+    constructor() {
+        // https://github.com/ifl0w/RandomWallpaperGnome3/blob/develop/randomwallpaper%40iflow.space/wallpaperController.js
+        let xdg_cache_home = GLib.getenv("XDG_CACHE_HOME");
+        if (!xdg_cache_home) xdg_cache_home = `${GLib.getenv("HOME")}/.cache`;
+        this.cacheLocation = `${xdg_cache_home}/${Self.metadata["uuid"]}/`;
+        this.cacheFile = this.cacheLocation + "contest.json";
 
-    // This array stores all the contests information
-    // each member of the array is an object with *atleast* these fields:
-    //          name(string), startTimeSeconds(int), durationSeconds(int), participating(bool)
-    // this.allContests = [{name: "example cf round 89", startTimeSeconds: 19900399, durationSeconds: 1290}]
-    this.allContests = [];
-
-    this.retriesLeft = 5;
-    this.retryTime = 1;
-    this.refreshTimeout = null;
-    this.nextContest = null;
-    this.loadFromFile();
-    this.refresh();
-  }
-
-  loadFromFile() {
-    // TODO: Issue#5
-    // Load the contest of the the cache file, parse the json within and then use updateContestsand setNextContest
-  }
-
-  saveToFile() {
-    // TODO: Issue#5
-    // Save this.allContests array to the cache file (this.cacheFile)
-  }
-
-  refresh() {
-    this.retriesLeft--;
-
-    // remove refreshTimeout used when refresh fails
-    if (this.refreshTimeout) {
-      Mainloop.source_remove(this.refreshTimeout);
-      this.refreshTimeout = null;
-    }
-
-    let session = new Soup.SessionAsync();
-    // TODO: Issue#8
-    // We want to expand to other sites as ell
-    // Create adapter class for codeforces,
-    let message = Soup.Message.new("GET", CODEFORCES_API_URL);
-
-    session.queue_message(message, (session, message) => {
-      try {
-        let response = JSON.parse(message.response_body.data);
-        if (response.status != "OK") throw "Got non OK status";
-
-        this.updateContests(response.result);
-
-        // if successful after retries, restore these
         this.retriesLeft = 5;
         this.retryTime = 1;
-        this.refreshTimeout = Mainloop.timeout_add_seconds(
-          6 * 3600,
-          Lang.bind(this, this.refresh)
-        );
-      } catch (e) {
-        global.log(
-          "ContestCountdown: Contest refresh failed\n retry left " +
-            this.retriesLeft +
-            "\n" +
-            e
-        );
-
-        if (this.retriesLeft) {
-          // if retries are left, then retry with exponentialy increasing time
-          this.retryTime *= 2;
-          this.refreshTimeout = Mainloop.timeout_add_seconds(
-            this.retryTime,
-            Lang.bind(this, this.refresh)
-          );
-        } else {
-          // permanent fail, no more try
-          this.retriesLeft = 5;
-          this.retryTime = 1;
-        }
-      }
-    });
-  }
-
-  // TODO: Issue#6
-  // use the newContest array to update the existing this.allContests array **efficiently**
-  // since original array contains more information, only add entries dont remove any
-  updateContests(newContests) {}
-
-  // TODO: Issue#7
-  // remove all contest object from the contests array that have already occured
-  _filterContest(contests) {}
-
-  secondsTillContest(contest) {
-    return Math.floor(
-      (new Date(contest.startTimeSeconds * 1000) - new Date()) / 1000
-    );
-  }
-
-  // TODO: Issue #7
-  // set this.nextContest to the nearest contest that user is participating in
-  setNextContest() {}
-
-  // returns the seconds till this.nextContest
-  // when no next contest
-  // if still trying to load data, return -1
-  // if failed to load, return -Infinity
-  // if no upcoming contest, return Infinity
-  secondsTillNextContest() {
-    if (this.nextContest) {
-      let timeDiff = this.secondsTillContest(this.nextContest);
-      if (timeDiff >= 0) return timeDiff;
-      else {
-        this.setNextContest();
-        return this.secondsTillNextContest();
-      }
-    } else {
-      if (this.retriesLeft < 5) return -1;
-      if (this.allContests.length == 0) return -Infinity;
-      return Infinity;
+        this.refreshTimeout = null;
+        this.allContests = [];
+        this.nextContest = null;
+        this.loadFromFile();
+        this.refresh();
     }
-  }
+
+    //Issue #7: complete this function, also call set Next contest and update contest
+    loadFromFile() { }
+
+    //Issue #7: complete this function
+    saveToFile() { }
+
+    refresh() {
+        this.retriesLeft--;
+
+        // remove refreshTimeout used when refresh fails
+        if (this.refreshTimeout) {
+            Mainloop.source_remove(this.refreshTimeout);
+            this.refreshTimeout = null;
+        }
+
+        let session = new Soup.SessionAsync();
+        let message = Soup.Message.new("GET", API_URL);
+
+        session.queue_message(message, (session, message) => {
+            try {
+                let response = JSON.parse(message.response_body.data);
+                global.log(response);
+
+                this.updateContests(response.result.upcoming);
+
+                // if successful after retries, restore these
+                this.retriesLeft = 5;
+                this.retryTime = 1;
+                this.refreshTimeout = Mainloop.timeout_add_seconds(6 * 3600, Lang.bind(this, this.refresh));
+            } catch (e) {
+                global.log("ContestCountdown: Contest refresh failed\n retry left " + this.retriesLeft + "\n" + e);
+
+                if (this.retriesLeft) {
+                    // if retries are left, then retry with exponentialy increasing time
+                    this.retryTime *= 2;
+                    this.refreshTimeout = Mainloop.timeout_add_seconds(this.retryTime, Lang.bind(this, this.refresh));
+                } else {
+                    // permanent fail, no more try
+                    this.retriesLeft = 5;
+                    this.retryTime = 1;
+                }
+            }
+        });
+    }
+
+    updateContests(newContests) {
+        newContests = this._filterContest(newContests);
+
+        newContests.forEach((contest) => {
+            if (!this.allContests.some((existingContest) => existingContest.url == contest.url)) {
+                if (!("participating" in contest)) contest.participating = true;
+                this.allContests.push(contest);
+            }
+        });
+
+        this.allContests = this._filterContest(this.allContests);
+
+        this.setNextContest();
+        this.saveToFile();
+    }
+
+    _filterContest(contests) {
+        contests = contests.filter((contest) =>  (new Date(contest.StartTime) > new Date()) && this.secondsTillContest(contest) >= 0);
+
+        contests.sort((a, b) => {
+            return new Date(a.StartTime) - new Date(b.StartTime);
+        });
+
+        return contests;
+    }
+
+    secondsTillContest(contest) {
+        return Math.floor((new Date(contest.StartTime) - new Date()) / 1000);
+    }
+
+    setNextContest() {
+        this.nextContest = null;
+        this.allContests = this._filterContest(this.allContests);
+        for (let contest of this.allContests)
+            if (contest.participating) {
+                this.nextContest = contest;
+                break;
+            }
+    }
+
+    secondsTillNextContest() {
+        if (this.nextContest) {
+            let timeDiff = this.secondsTillContest(this.nextContest);
+            if (timeDiff >= 0) return timeDiff;
+            else {
+                this.setNextContest();
+                return this.secondsTillNextContest();
+            }
+        } else {
+            // when no next contest
+            // if still trying to load data, return -1
+            // if failed to load, return -Infinity
+            // if no upcoming contest, return Infinity
+
+            if (this.retriesLeft < 5) return -1;
+            if (this.allContests.length == 0) return -Infinity;
+            return Infinity;
+        }
+    }
 };
