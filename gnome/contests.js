@@ -43,10 +43,36 @@ var Contests = class {
     }
 
     //Issue #7: complete this function, also call set Next contest and update contest
-    loadFromFile() { }
+    loadFromFile() { 
+
+        try // we use this to check for errors, 
+        {
+                let Data = GLib.file_get_contents(this.cacheFile); // data will be an array
+                if (Data[0])
+                        this.updateContests(JSON.parse(Data[1]));
+
+                this.setNextContest();
+        }
+        catch (e) // if error found 
+        {
+                global.log("ContestCountdown: Cache file not found")
+        }
+    }
 
     //Issue #7: complete this function
-    saveToFile() { }
+    saveToFile() 
+    {
+        GLib.mkdir_with_parents(this.cacheLocation, parseInt('0755', 8)); // 0755 = --- rwx r-x r-x,octal notation
+        // user = read and write , group = read and execute, other = read and execute
+
+        let input = Gio.file_new_for_path(this.cacheFile);
+
+        let fstream = input.replace(null, false, Gio.FileCreateFlags.NONE, null);
+
+        fstream.write(JSON.stringify(this.allContests), null);
+
+        fstream.close(null);
+     }
 
     refresh() {
         this.retriesLeft--;
