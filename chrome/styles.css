@@ -1,9 +1,3 @@
-html, body {
-    height: 100%;
-    background-size: cover;
-    background: url('./assets/background.png') no-repeat
-}
-
 #container {
     height: 100%;
     display: flex;
@@ -26,11 +20,17 @@ html, body {
 }
 
 .contestDiv {
-    background-color: rgb(19, 70, 110);
+    background: linear-gradient(to left ,rgb(10, 0, 95) 0% ,rgb(11, 10, 61) 100%);
+    border-radius: 6px;
     color: white;
     text-align: center;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     padding: 20px;
+    transition: all ease 0.9s;
+}
+
+.contestDiv:hover{
+    transform: scale(1.2);
 }
 
 .contestName {
@@ -51,8 +51,110 @@ p {
     font-size: 16px;
 }
 
+.background{
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    background-image: none;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center !important;
+}
+
+.bottom_gradient{
+    position: absolute;
+  bottom: 24px;
+  right: 40px;
+  font-size: 3rem;
+  color: white ;
+  font-weight: 300;
+  z-index: 2;
+}
+
+.bottom_gradient #day{
+    font-size: 1rem;
+}
+
+.gmail-link{
+    color: white;
+    text-decoration: none;
+    font-weight: 350;
+    position: absolute;
+    right: 230px;
+    top: 60px;
+    font-size: 1.1rem;
+    transition: all ease 0.8s;
+}
+
+.unsplash-link{
+    color: white;
+    text-decoration: none;
+    font-weight: 350;
+    position: absolute;
+    right: 160px;
+    top: 60px;
+    font-size: 1.1rem;
+    transition: all ease 0.8s;
+}
+
+.app-icon{
+    position: absolute;
+    right: 130px;
+    top: 60px;
+    transition: all ease 0.8s;
+}
+
+.gmail-link:hover{
+    transform: scale(1.3);
+}
+
+.unsplash-link:hover{
+    transform: scale(1.3);
+}
+
+.app-icon:hover{
+    transform: scale(1.3);
+}
+
+.more-btn{
+    color: white;
+    position: absolute;
+   left: 120px;
+    top: 60px;
+    font-weight: bold;
+    background: rgb(10, 0, 95);
+    border: none;
+    padding: 0.6rem 0.8rem;
+    transition: all ease 0.8s;
+}
+.more-btn:hover{
+background: rgb(224, 56, 56);
+transform: scale(1.1);
+}
+
+.contest-heading{
+    font-size: 1.6rem;
+    color: white;
+    position: absolute;
+    right: 200px;
+    top: 20px;
+}
+
 .google-logo {
-    width: 50%;
+    width: 30%;
+    position: absolute;
+    z-index: 1;
+    bottom: 55%;
+}
+
+.search-box{
+    position: absolute;
+    z-index: 1;
+    bottom: 38%;
 }
 
 .search-container {
@@ -67,11 +169,12 @@ p {
     margin-left: 60px;
     width: 40vw;
     height: 50px;
-    border-radius: 10px;
+    border-radius: 100px;
     font-size: 1rem;
     padding-left: 1em;
     outline: none;
     border: none;
+    margin-bottom: 45px;
 }
 
 #search-input:focus {
@@ -92,9 +195,41 @@ p {
     background: transparent;
     border: none;
     right: 60px;
-    top: 20px
+    cursor:pointer;
 }
 
+.search-img{
+    height: 40px;
+    width: 40px;
+    transition: all ease 0.8s;
+}
+
+.search-img:hover{
+transform: scale(1.2);
+}
 .search-btn>img {
     width: 90%;
+}
+
+.icons{
+    width: 50px;
+    height: 50px;
+    margin: 0 1.4rem;
+    transition: all ease 0.8s;
+}
+
+.icons:hover{
+    transform: scale(1.4);
+}
+
+.icon-container1{
+position: absolute;
+top: 63%;
+left: 37%;
+}
+
+.icon-container2{
+    position: absolute;
+    top: 78%;
+    left: 37%;
 }
