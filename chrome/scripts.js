@@ -4,9 +4,12 @@ function init() {
             setTimeout(init, 1000);
 
         else {
-            runClock(new Date(response.allContests[0].StartTime));
+            setInterval(() => {
+                var firstContest = new Date(response.allContests[0].StartTime)
+                runClock(firstContest);
+            }, 1000);
             displayContests(response.allContests);
-        }
+        }    
     });
 }
 
@@ -27,7 +30,6 @@ function remainingTime(targetDate) {
         seconds: seconds,
     };
 }
-
 function setClock(date) {
     var time = remainingTime(date);
     document.getElementById("timer").innerHTML = time.days + "d " + time.hours + "h " + time.minutes + "m " + time.seconds + "s Left";
